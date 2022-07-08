@@ -4,46 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Display album artwork for currently playing song from your Spotify account.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../static/base.css">
+    <script src="../static/script.js"></script>
     <title>{{ title }} - raspotiPi</title>
 
 </head>
 <body>
-<script>
-
-
-    let getSong = async () => {
-        let response = await fetch('/artwork');
-        spotifyImg = 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
-
-        try {
-            if (response.status == 200) {
-                let json = await response.json()
-                artist = json['item']['artists'][0]['name']
-                song = json['item']['name']
-                img = json['item']['album']['images'][0]['url']
-
-                document.getElementById("artistSong").innerHTML = `<h2>Now playing:</h2><p>${artist}: ${song}</p>`
-                document.getElementById("artwork").innerHTML = "<img src=" + img +" />"
-            }
-        }
-        catch {
-            document.getElementById("artistSong").innerHTML = ''
-            document.getElementById("artwork").innerHTML = "<img src=" + spotifyImg +" />"
-        }
-    }
-
-    
-    getSong()
-    // getSong()
-    setInterval(() => {
-        getSong(); 
-    }, 5000);
-
-</script>
 
     <h1 class="raspotiPi">RaspotiPi</h1>
     <div id="artistSong"></div>
