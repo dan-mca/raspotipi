@@ -21,7 +21,7 @@ def login():
         <a href="/">Login</a>
         """
     else:
-        return redirect('/index')
+        return redirect('/playing')
 
 @app.route('/redirect')
 def redirectPage():
@@ -42,27 +42,29 @@ def redirectPage():
         print(session['token_info']['access_token'])
 
         # return redirect to currently playing
-        return redirect('/index')
+        return redirect('/playing')
     else:
         print(len(session))
-        return redirect('/index')
-
-@app.route('/index')
-def index():
-    
-    try:
-        token = session['token_info']['access_token']
-        currently_playing = Spotify(token).currently_playing()
-        user_profile = Spotify(token).current_user()
-        if currently_playing:
-            return render_template('index.html', title='Home', playing=currently_playing, profile=user_profile)
-        else:
-            return 'No song playing'
-    except:
-        return redirect('/login')
+        return redirect('/playing')
 
 @app.route('/signout')
 def sign_out():
     session.pop('token_info', None)
     print(session)
     return redirect('/login')
+
+@app.route('/artwork')
+def artwork():
+    token = session['token_info']['access_token']
+    try:
+        currently_playing = Spotify(token).currently_playing()
+        return currently_playing
+    except:
+        print('no song playing')
+        return 'no song playing'
+
+@app.route('/playing')
+def playing():
+    currently_playing = artwork()
+    return render_template('index.html', title='Home', playing=currently_playing)
+    
