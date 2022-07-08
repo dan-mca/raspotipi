@@ -49,15 +49,17 @@ def redirectPage():
 
 @app.route('/index')
 def index():
-    token = session['token_info']['access_token']
-
+    
     try:
+        token = session['token_info']['access_token']
         currently_playing = Spotify(token).currently_playing()
         user_profile = Spotify(token).current_user()
         if currently_playing:
             return render_template('index.html', title='Home', playing=currently_playing, profile=user_profile)
+        else:
+            return 'No song playing'
     except:
-        return 'No song playing'
+        return redirect('/login')
 
 @app.route('/signout')
 def sign_out():
