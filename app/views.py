@@ -11,12 +11,10 @@ TOKEN_INFO = 'token_info'
 def home():
     auth = SpotifyAuth()
     auth_url = auth.get_auth_url()
-    # return auth_url
     return redirect(auth_url)
 
 @app.route('/login')
 def login():
-    # print(len(session))
     if len(session) == 0:
         return """
         <h1>Login</h1>
@@ -51,14 +49,13 @@ def redirectPage():
 
 @app.route('/index')
 def index():
-    # print(session)
     token = session['token_info']['access_token']
-    user = {'username': 'Dan'}
 
     try:
-        currently_playing = Spotify().currently_playing(token)
+        currently_playing = Spotify(token).currently_playing()
+        user_profile = Spotify(token).current_user()
         if currently_playing:
-            return render_template('index.html', title='Home', user=user, playing=currently_playing)
+            return render_template('index.html', title='Home', playing=currently_playing, profile=user_profile)
     except:
         return 'No song playing'
 

@@ -7,7 +7,7 @@
     <title>{{ title }} - raspotiPi</title>
 </head>
 <body>
-    <h1>Hello, {{ user.username }}</h1>
+    <h1>Hello, {{ profile.display_name }}</h1>
     <h2>Now playing:</h2>
     <p>{{ playing.item.artists[0].name }}: {{ playing.item.name }}</p>
     <img src={{ playing.item.album.images[0].url }} />
